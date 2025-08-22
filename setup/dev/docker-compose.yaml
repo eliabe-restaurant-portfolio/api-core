@@ -1,0 +1,52 @@
+services:
+  app:
+    build:
+      context: ../..
+      dockerfile: setup/dev/app/Dockerfile.app
+    env_file:
+      - ../../.env
+    container_name: "docker_restaurant_app"
+    environment:
+      - GO111MODULE=on
+      - CGO_ENABLED=0
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+    depends_on:
+      - postgres
+      - rabbitmq
+
+  postgres:
+    image: postgres:16
+    env_file:
+      - ../../.env
+    container_name: "docker_restaurant_postgres"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+    
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: "docker_restaurant_rabbitmq"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - backend
+
+volumes:
+  logs_data:
+  postgres_data:
+
+networks:
+  backend:
+    name: backend
+    driver: bridge
