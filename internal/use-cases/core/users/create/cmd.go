@@ -4,11 +4,9 @@ import (
 	"context"
 	"time"
 
+	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
 	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
-	sendresetpasswordemailconsumer "github.com/eliabe-portfolio/restaurant-app/internal/queues/consumers/send-reset-password-email"
-	"github.com/eliabe-portfolio/restaurant-app/internal/queues/producers"
 	sendresetpasswordemailproducer "github.com/eliabe-portfolio/restaurant-app/internal/queues/producers/send-reset-password-email"
-	"github.com/eliabe-portfolio/restaurant-app/internal/repositories"
 	resetpasswordrepo "github.com/eliabe-portfolio/restaurant-app/internal/repositories/reset-password"
 	userrepo "github.com/eliabe-portfolio/restaurant-app/internal/repositories/users"
 	uow "github.com/eliabe-portfolio/restaurant-app/internal/unit-of-work"
@@ -25,13 +23,13 @@ type Command struct {
 	sendInviteUserEmailProducer sendresetpasswordemailproducer.Producer
 }
 
-func New(repositories repositories.Provider, uow uow.UnitOfWork, producers producers.Provider) Command {
+func New(adapters *adapters.Adapters) Command {
 	return Command{
 		messages:                    NewMessages(),
-		unitOfWork:                  uow,
-		userRepository:              repositories.User(),
-		resetPasswordRepository:     repositories.ResetPassword(),
-		sendInviteUserEmailProducer: producers.SendPasswordResetEmail(),
+		unitOfWork:                  (*adapters).UnitOfWork(),
+		userRepository:              (*adapters).Repositories().User(),
+		resetPasswordRepository:     (*adapters).Repositories().ResetPassword(),
+		sendInviteUserEmailProducer: (*adapters).Producers().SendPasswordResetEmail(),
 	}
 }
 
@@ -74,12 +72,7 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 		return cmd.messages.ExistsUserWithSameEmail(), nil
 	}
 
-	// random, err := valueobjects.NewRandonPassword()
-	// if err != nil {
-	// 	return cmd.messages.Default(), err
-	// }
-
-	pass, err := valueobjects.NewPassword("#Eli2025")
+	encrypted, _, err := hashing.GeneratePassword()
 	if err != nil {
 		return cmd.messages.Default(), err
 	}
@@ -88,7 +81,7 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 		Ctx:       params.Context,
 		Username:  params.Username,
 		Email:     params.Email,
-		Password:  pass,
+		Password:  encrypted,
 		TaxNumber: params.TaxNumber,
 		Status:    constants.UserInactive,
 	})
@@ -120,7 +113,7 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 		return cmd.messages.Default(), err
 	}
 
-	if err = cmd.sendInviteUserEmailProducer.Send(sendresetpasswordemailconsumer.SendPasswordResetEmailMessage{
+	if err = cmd.sendInviteUserEmailProducer.Send(sendresetpasswordemailproducer.SendPasswordResetEmailMessage{
 		ResetPasswordToken: createdReset.Token.String(),
 		Token:              random,
 	}); err != nil {

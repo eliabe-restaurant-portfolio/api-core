@@ -46,11 +46,7 @@ func (hdl UserHandler) Create(ctx *gin.Context) {
 		return
 	}
 
-	result, err := createusercmd.New(
-		hdl.repositories,
-		hdl.uow,
-		hdl.producers,
-	).Execute(*params)
+	result, err := createusercmd.New(hdl.adapters).Execute(*params)
 	if err != nil {
 		log.Printf("create user command: %s", err.Error())
 		ctx.JSON(http.StatusInternalServerError, defaultError)

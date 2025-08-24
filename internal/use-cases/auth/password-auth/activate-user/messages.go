@@ -1,4 +1,4 @@
-package activatelogincmd
+package activateusercmd
 
 import (
 	"github.com/eliabe-portfolio/restaurant-app/internal/constants"

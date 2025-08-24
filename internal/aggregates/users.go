@@ -4,6 +4,7 @@ import (
 	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
 	"github.com/eliabe-portfolio/restaurant-app/internal/entities"
 	valueobjects "github.com/eliabe-portfolio/restaurant-app/internal/value-objects"
+	hashing "github.com/eliabe-portfolio/restaurant-app/pkg/hash"
 )
 
 type User interface {
@@ -54,5 +55,5 @@ func (aggr userAggr) GetFailedLoginAttempts() int {
 }
 
 func (aggr userAggr) IsValidPassword(password valueobjects.Password) bool {
-	return aggr.val.Password == password.Get()
+	return hashing.Compare(aggr.val.Password, password.Get())
 }

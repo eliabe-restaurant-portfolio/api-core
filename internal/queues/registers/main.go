@@ -21,11 +21,7 @@ func New(connections *connections.Provider) *QueueHandler {
 	return &QueueHandler{channel: connections.RabbitMQ.Get()}
 }
 
-func (h *QueueHandler) declareQueue(queueName string) error {
-	if queueName == "" {
-		return fmt.Errorf("queue name cannot be empty")
-	}
-
+func (h *QueueHandler) declareQueue(queueName string) {
 	_, err := h.channel.QueueDeclare(
 		queueName,
 		true,  // durable
@@ -35,9 +31,8 @@ func (h *QueueHandler) declareQueue(queueName string) error {
 		nil,   // args
 	)
 	if err != nil {
-		return fmt.Errorf("failed to declare queue %q: %w", queueName, err)
+		panic(fmt.Errorf("failed to declare queue %q: %w", queueName, err))
 	}
-	return nil
 }
 
 func (h *QueueHandler) DeclareAllQueues() {

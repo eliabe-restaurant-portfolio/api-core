@@ -9,6 +9,6 @@ type UserStatus string
 
 var (
 	UserActive   UserStatus = "active"
-	UserBloqued  UserStatus = "bloqued"
+	UserBloqued  UserStatus = "blocked"
 	UserInactive UserStatus = "inactive"
 )

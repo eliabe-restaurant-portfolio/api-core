@@ -1,15 +1,13 @@
-package resetpasswordcmd
+package requestpasswordresetcmd
 
 import (
 	"context"
 	"time"
 
+	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
 	"github.com/eliabe-portfolio/restaurant-app/internal/aggregates"
 	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
-	sendresetpasswordemailconsumer "github.com/eliabe-portfolio/restaurant-app/internal/queues/consumers/send-reset-password-email"
-	"github.com/eliabe-portfolio/restaurant-app/internal/queues/producers"
 	sendresetpasswordemailproducer "github.com/eliabe-portfolio/restaurant-app/internal/queues/producers/send-reset-password-email"
-	"github.com/eliabe-portfolio/restaurant-app/internal/repositories"
 	resetpasswordrepo "github.com/eliabe-portfolio/restaurant-app/internal/repositories/reset-password"
 	userrepo "github.com/eliabe-portfolio/restaurant-app/internal/repositories/users"
 	uow "github.com/eliabe-portfolio/restaurant-app/internal/unit-of-work"
@@ -30,13 +28,13 @@ type Params struct {
 	Email valueobjects.Email
 }
 
-func New(repositories repositories.Provider, uow uow.UnitOfWork, producers producers.Provider) Command {
+func New(adapters *adapters.Adapters) Command {
 	return Command{
 		messages:                       NewMessages(),
-		unitOfWork:                     uow,
-		userRepository:                 repositories.User(),
-		resetPasswordRepository:        repositories.ResetPassword(),
-		sendResetPasswordEmailProducer: producers.SendPasswordResetEmail(),
+		unitOfWork:                     (*adapters).UnitOfWork(),
+		userRepository:                 (*adapters).Repositories().User(),
+		resetPasswordRepository:        (*adapters).Repositories().ResetPassword(),
+		sendResetPasswordEmailProducer: (*adapters).Producers().SendPasswordResetEmail(),
 	}
 }
 
@@ -75,7 +73,7 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 		Ctx:       ctx,
 		UserToken: actorEntity.Token,
 		Hash:      encrypted,
-		ValidAt:   time.Now(),
+		ValidAt:   time.Now().Add(30 * time.Minute),
 	})
 	if err != nil {
 		cmd.unitOfWork.Rollback(ctx)
@@ -94,7 +92,7 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 		return cmd.messages.Default(), err
 	}
 
-	err = cmd.sendResetPasswordEmailProducer.Send(sendresetpasswordemailconsumer.SendPasswordResetEmailMessage{
+	err = cmd.sendResetPasswordEmailProducer.Send(sendresetpasswordemailproducer.SendPasswordResetEmailMessage{
 		ResetPasswordToken: created.Token.String(),
 		Token:              random,
 	})

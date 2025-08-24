@@ -2,10 +2,10 @@ package adapters
 
 import (
 	"github.com/eliabe-portfolio/restaurant-app/internal/connections"
-	"github.com/eliabe-portfolio/restaurant-app/internal/connections/configs"
 	"github.com/eliabe-portfolio/restaurant-app/internal/middlewares"
 	"github.com/eliabe-portfolio/restaurant-app/internal/queues"
 	"github.com/eliabe-portfolio/restaurant-app/internal/queues/producers"
+
 	"github.com/eliabe-portfolio/restaurant-app/internal/repositories"
 	uow "github.com/eliabe-portfolio/restaurant-app/internal/unit-of-work"
 )
@@ -24,19 +24,15 @@ type adapters struct {
 	producers    producers.Provider
 }
 
-func New(conf *configs.Config) Adapters {
-	conns := connections.New(conf)
-	conns.ConnectPostgres()
-	conns.ConnectRabbitMQ()
-
-	repositories := repositories.New(conns)
+func New(connections *connections.Provider) Adapters {
+	repositories := repositories.New(connections)
 
 	middlewares := middlewares.New()
 
-	unitOfWork := uow.New(conns)
+	unitOfWork := uow.New(connections)
 
-	queueHandler := queues.New(conns, &repositories)
-	producers := queueHandler.Producers
+	queueHandler := queues.New(connections, &repositories)
+	producers := queueHandler.Producers()
 
 	return adapters{
 		repositories,

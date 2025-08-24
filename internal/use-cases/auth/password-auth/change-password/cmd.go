@@ -3,10 +3,10 @@ package changepasswordcmd
 import (
 	"context"
 
+	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
 	"github.com/eliabe-portfolio/restaurant-app/internal/aggregates"
 	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
 	"github.com/eliabe-portfolio/restaurant-app/internal/entities"
-	"github.com/eliabe-portfolio/restaurant-app/internal/repositories"
 	userrepo "github.com/eliabe-portfolio/restaurant-app/internal/repositories/users"
 	uow "github.com/eliabe-portfolio/restaurant-app/internal/unit-of-work"
 	valueobjects "github.com/eliabe-portfolio/restaurant-app/internal/value-objects"
@@ -32,11 +32,11 @@ type RelatedEntities struct {
 	Actor *entities.User
 }
 
-func New(repositories repositories.Provider, uow uow.UnitOfWork) Command {
+func New(adapters *adapters.Adapters) Command {
 	return Command{
 		messages:       NewMessages(),
-		unitOfWork:     uow,
-		userRepository: repositories.User(),
+		unitOfWork:     (*adapters).UnitOfWork(),
+		userRepository: (*adapters).Repositories().User(),
 	}
 }
 

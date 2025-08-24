@@ -1,32 +1,28 @@
 package consumers
 
 import (
-	"context"
-	"fmt"
 	"log"
 
+	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
 	"github.com/eliabe-portfolio/restaurant-app/internal/connections"
 	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
 	sendresetpasswordemailconsumer "github.com/eliabe-portfolio/restaurant-app/internal/queues/consumers/send-reset-password-email"
-	"github.com/eliabe-portfolio/restaurant-app/internal/repositories"
-	sendresetpasswordemailcmd "github.com/eliabe-portfolio/restaurant-app/internal/use-cases/notification/email/send-reset-pwd-email"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
 	"github.com/rabbitmq/amqp091-go"
 )
 
 type Consumer struct {
-	channel      *amqp091.Channel
-	repositories *repositories.Provider
+	channel  *amqp091.Channel
+	adapters *adapters.Adapters
 }
 
-func New(connections *connections.Provider, repositories *repositories.Provider) *Consumer {
+func New(connections *connections.Provider, adapters *adapters.Adapters) *Consumer {
 	return &Consumer{
-		channel:      connections.RabbitMQ.Get(),
-		repositories: repositories,
+		channel:  (*connections).RabbitMQ.Get(),
+		adapters: adapters,
 	}
 }
 
-func (c *Consumer) Start(ctx context.Context) error {
+func (c *Consumer) Start() {
 	deliveries, err := c.channel.Consume(
 		constants.Queues.ResetPasswordEmail,
 		"",    // consumerTag
@@ -37,39 +33,28 @@ func (c *Consumer) Start(ctx context.Context) error {
 		nil,   // args
 	)
 	if err != nil {
-		return fmt.Errorf("could not start consuming from %q: %w", constants.Queues.ResetPasswordEmail, err)
+		panic(err)
 	}
 
-	go c.handler(ctx, deliveries)
-
-	return nil
+	go c.handler(deliveries)
 }
 
-func (c *Consumer) handler(ctx context.Context, deliveries <-chan amqp091.Delivery) {
+func (c *Consumer) handler(deliveries <-chan amqp091.Delivery) {
 	for {
-		select {
-		case <-ctx.Done():
-			log.Printf("Consumer for queue %q stopped: %v", constants.Queues.ResetPasswordEmail, ctx.Err())
+		d, ok := <-deliveries
+		if !ok {
+			log.Printf("Channel closed for queue %q", constants.Queues.ResetPasswordEmail)
 			return
-		case d, ok := <-deliveries:
-			if !ok {
-				log.Printf("Channel closed for queue %q", constants.Queues.ResetPasswordEmail)
-				return
-			}
-			if d.RoutingKey == constants.Queues.ResetPasswordEmail {
-				consumer := sendresetpasswordemailconsumer.New(c.repositories)
-				consumer.Process(ctx, d)
-				return
-			}
-			if d.RoutingKey == constants.Queues.InviteUserEmail {
-				consumer := sendresetpasswordemailconsumer.New(c.repositories)
-				consumer.Process(ctx, d)
-				return
-			}
+		}
+		if d.RoutingKey == constants.Queues.ResetPasswordEmail {
+			consumer := sendresetpasswordemailconsumer.New(c.adapters)
+			consumer.Process(d)
+			return
+		}
+		if d.RoutingKey == constants.Queues.InviteUserEmail {
+			consumer := sendresetpasswordemailconsumer.New(c.adapters)
+			consumer.Process(d)
+			return
 		}
 	}
-}
-
-type ConsumerProvider interface {
-	SendPasswordResetEmail(message sendresetpasswordemailcmd.Params) (returns.Api, error)
 }

@@ -8,17 +8,11 @@ import (
 	valueobjects "github.com/eliabe-portfolio/restaurant-app/internal/value-objects"
 	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 )
 
 type LoginHttpDto struct {
-	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required,min=6"`
-}
-
-func (dto *LoginHttpDto) Validate() error {
-	var validate = validator.New()
-	return validate.Struct(dto)
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 func (hdl AuthHandler) Login(ctx *gin.Context) {
@@ -31,23 +25,15 @@ func (hdl AuthHandler) Login(ctx *gin.Context) {
 		return
 	}
 
-	if err := dto.Validate(); err != nil {
-		log.Printf("password login command: %v", err)
-		ctx.JSON(http.StatusBadRequest, defaultError)
-		return
-	}
-
-	params, err := buildLoginParams(dto)
+	params, err := parseLoginParams(dto)
 	if err != nil {
 		log.Printf("password login command: %v", err)
 		ctx.JSON(http.StatusBadRequest, defaultError)
 		return
 	}
 
-	result, err := traditionallogincmd.New(
-		hdl.repositories,
-		hdl.uow,
-	).Execute(*params)
+	result, err := traditionallogincmd.New(hdl.adapters).Execute(*params)
+
 	if err != nil {
 		log.Printf("password login command: %v", err)
 		ctx.JSON(http.StatusInternalServerError, defaultError)
@@ -57,7 +43,7 @@ func (hdl AuthHandler) Login(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
-func buildLoginParams(dto LoginHttpDto) (*traditionallogincmd.Params, error) {
+func parseLoginParams(dto LoginHttpDto) (*traditionallogincmd.Params, error) {
 	email, err := valueobjects.NewEmail(dto.Email)
 	if err != nil {
 		return nil, err

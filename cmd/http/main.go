@@ -8,9 +8,11 @@ import (
 
 	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
 	httpserver "github.com/eliabe-portfolio/restaurant-app/internal/app/http"
+	"github.com/eliabe-portfolio/restaurant-app/internal/connections"
 	"github.com/eliabe-portfolio/restaurant-app/internal/connections/configs"
 	"github.com/eliabe-portfolio/restaurant-app/internal/envs"
 	"github.com/eliabe-portfolio/restaurant-app/internal/handlers"
+	"github.com/eliabe-portfolio/restaurant-app/internal/queues/consumers"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,7 +21,14 @@ func main() {
 
 	conf := configs.New()
 
-	adapters := adapters.New(conf)
+	conns := connections.New(conf)
+	conns.ConnectPostgres()
+	conns.ConnectRabbitMQ()
+
+	adapters := adapters.New(conns)
+
+	consumers := consumers.New(conns, &adapters)
+	consumers.Start()
 
 	httpServer := httpserver.New().
 		ConfigureTrustedProxies().
@@ -27,25 +36,22 @@ func main() {
 		ConfigureLogs().
 		ConfigureCors()
 
-	app := New(httpServer, &adapters, conf)
-	app.RegisterControllers()
+	app := New(httpServer, conf)
+	app.StartRoutes(&adapters)
 	app.Run()
 }
 
 type App struct {
-	Adapters *adapters.Adapters
-	Server   *http.Server
-	Router   *gin.Engine
+	Server *http.Server
+	Router *gin.Engine
 }
 
 func New(
 	server *httpserver.HttpServer,
-	apt *adapters.Adapters,
 	conf *configs.Config,
 ) *App {
 	return &App{
-		Adapters: apt,
-		Router:   server.Router(),
+		Router: server.Router(),
 		Server: &http.Server{
 			Addr:              fmt.Sprintf("0.0.0.0:%s", conf.ServerPort),
 			Handler:           server.Router(),
@@ -57,8 +63,8 @@ func New(
 	}
 }
 
-func (app *App) RegisterControllers() {
-	for _, registerer := range handlers.New(app.Adapters) {
+func (app *App) StartRoutes(adapters *adapters.Adapters) {
+	for _, registerer := range handlers.New(adapters) {
 		registerer.Register(app.Router)
 	}
 }

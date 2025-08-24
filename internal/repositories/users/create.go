@@ -14,7 +14,7 @@ type CreateUserDto struct {
 	Ctx       context.Context
 	Username  valueobjects.Username
 	Email     valueobjects.Email
-	Password  valueobjects.Password
+	Password  string
 	TaxNumber *valueobjects.TaxNumber
 	Status    constants.UserStatus
 }
@@ -34,7 +34,7 @@ func (r repository) Create(dto CreateUserDto) (*entities.User, error) {
 	item := entities.User{
 		Email:     dto.Email.Get(),
 		Username:  dto.Username.Get(),
-		Password:  dto.Password.Get(),
+		Password:  dto.Password,
 		Status:    dto.Status,
 		TaxNumber: *taxNumber,
 	}

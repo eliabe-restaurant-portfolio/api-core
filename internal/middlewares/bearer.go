@@ -28,7 +28,7 @@ func (m middlewares) BearerAuth() gin.HandlerFunc {
 			return
 		}
 
-		publicPem, err := jwt.LoadPublicKeyFromFile("./storage/private_key.pem")
+		publicPem, err := jwt.LoadPublicKeyFromFile("./storage/public_key.pem")
 		if err != nil {
 			c.Abort()
 			return

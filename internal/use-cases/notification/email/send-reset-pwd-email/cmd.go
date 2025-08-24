@@ -3,9 +3,9 @@ package sendresetpasswordemailcmd
 import (
 	"fmt"
 
+	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
 	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
 	"github.com/eliabe-portfolio/restaurant-app/internal/entities"
-	"github.com/eliabe-portfolio/restaurant-app/internal/repositories"
 	resetpasswordrepo "github.com/eliabe-portfolio/restaurant-app/internal/repositories/reset-password"
 	"github.com/eliabe-portfolio/restaurant-app/pkg/email"
 	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
@@ -17,15 +17,15 @@ type Command struct {
 	resetPasswordRepository resetpasswordrepo.ResetPasswordRepository
 }
 
-func New(repositories *repositories.Provider) Command {
+func New(adapters *adapters.Adapters) Command {
 	return Command{
 		messageProvider:         messageProvider,
-		resetPasswordRepository: (*repositories).ResetPassword(),
+		resetPasswordRepository: (*adapters).Repositories().ResetPassword(),
 	}
 }
 
 type Params struct {
-	PasswordResetToken uuid.UUID
+	ResetPasswordToken uuid.UUID
 	Token              string
 }
 
@@ -40,7 +40,7 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 	}
 
 	if related.PasswordResetToken == nil {
-		return returns.Api{}, fmt.Errorf("password reset token not found for uuid: %s", params.PasswordResetToken)
+		return returns.Api{}, fmt.Errorf("password reset token not found for uuid: %s", params.ResetPasswordToken)
 	}
 
 	user := related.PasswordResetToken.User
@@ -49,7 +49,7 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 		To:       user.Email,
 		Subject:  "Redefinição de Senha",
 		UserName: user.Username,
-		Url:      "123456",
+		Url:      params.Token,
 	})
 	if err != nil {
 		return returns.Api{}, err
@@ -62,7 +62,7 @@ func (cmd Command) getRelatedEntities(params Params) (*RelatedEntities, error) {
 	related := &RelatedEntities{}
 
 	passwordResetToken, err := cmd.resetPasswordRepository.Find(resetpasswordrepo.FindResetPasswordDto{
-		Token:     params.PasswordResetToken,
+		Token:     params.ResetPasswordToken,
 		EagerLoad: []constants.EntityEagerLabel{constants.UserLabel},
 	})
 	if err != nil {

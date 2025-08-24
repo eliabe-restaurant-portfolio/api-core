@@ -1,15 +1,16 @@
-package activatelogincmd
+package activateusercmd
 
 import (
 	"context"
 
+	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
 	"github.com/eliabe-portfolio/restaurant-app/internal/aggregates"
 	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
-	"github.com/eliabe-portfolio/restaurant-app/internal/repositories"
 	resetpasswordrepo "github.com/eliabe-portfolio/restaurant-app/internal/repositories/reset-password"
 	userrepo "github.com/eliabe-portfolio/restaurant-app/internal/repositories/users"
 	uow "github.com/eliabe-portfolio/restaurant-app/internal/unit-of-work"
 	valueobjects "github.com/eliabe-portfolio/restaurant-app/internal/value-objects"
+	hashing "github.com/eliabe-portfolio/restaurant-app/pkg/hash"
 	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
 	"github.com/google/uuid"
 )
@@ -31,12 +32,12 @@ type Return struct {
 	UserStatus string `json:"user_status"`
 }
 
-func New(repositories repositories.Provider, uow uow.UnitOfWork) Command {
+func New(adapters *adapters.Adapters) Command {
 	return Command{
 		messages:                NewMessages(),
-		unitOfWork:              uow,
-		userRepository:          repositories.User(),
-		resetPasswordRepository: repositories.ResetPassword(),
+		unitOfWork:              (*adapters).UnitOfWork(),
+		userRepository:          (*adapters).Repositories().User(),
+		resetPasswordRepository: (*adapters).Repositories().ResetPassword(),
 	}
 }
 
@@ -91,10 +92,15 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 		return cmd.messages.InvalidResetToken(), nil
 	}
 
+	encrypted, err := hashing.Hash(params.NewPassword.Get())
+	if err != nil {
+		return cmd.messages.Default(), nil
+	}
+
 	if err = cmd.userRepository.Update(userrepo.UpdateUserDto{
 		Ctx:       ctx,
 		UserToken: resetPasswordEntity.User.Token,
-		Password:  params.NewPassword.Get(),
+		Password:  encrypted,
 		Status:    &constants.UserActive,
 	}); err != nil {
 		return cmd.messages.Default(), err

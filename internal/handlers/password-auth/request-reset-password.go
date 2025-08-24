@@ -4,23 +4,17 @@ import (
 	"log"
 	"net/http"
 
-	resetpasswordcmd "github.com/eliabe-portfolio/restaurant-app/internal/use-cases/auth/password-auth/reset-password"
+	requestpasswordresetcmd "github.com/eliabe-portfolio/restaurant-app/internal/use-cases/auth/password-auth/request-password-reset"
 	valueobjects "github.com/eliabe-portfolio/restaurant-app/internal/value-objects"
 	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 )
 
 type ResetPasswordHttpDto struct {
-	Email string `json:"email" binding:"required,email"`
+	Email string `json:"email"`
 }
 
-func (dto *ResetPasswordHttpDto) Validate() error {
-	var validate = validator.New()
-	return validate.Struct(dto)
-}
-
-func (hdl AuthHandler) ResetPassword(ctx *gin.Context) {
+func (hdl AuthHandler) RequestResetPassword(ctx *gin.Context) {
 	var defaultError = returns.InternalServerError([]string{})
 	var dto ResetPasswordHttpDto
 
@@ -30,24 +24,15 @@ func (hdl AuthHandler) ResetPassword(ctx *gin.Context) {
 		return
 	}
 
-	if err := dto.Validate(); err != nil {
-		log.Printf("reset password command: %v", err)
-		ctx.JSON(http.StatusBadRequest, defaultError)
-		return
-	}
-
-	params, err := buildResetPasswordParams(dto)
+	params, err := parseRequestResetPassword(dto)
 	if err != nil {
 		log.Printf("reset password command: %v", err)
 		ctx.JSON(http.StatusBadRequest, defaultError)
 		return
 	}
 
-	result, err := resetpasswordcmd.New(
-		hdl.repositories,
-		hdl.uow,
-		hdl.producers,
-	).Execute(*params)
+	result, err := requestpasswordresetcmd.New(hdl.adapters).Execute(*params)
+
 	if err != nil {
 		log.Printf("reset password command: %v", err)
 		ctx.JSON(http.StatusInternalServerError, defaultError)
@@ -59,12 +44,12 @@ func (hdl AuthHandler) ResetPassword(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
-func buildResetPasswordParams(dto ResetPasswordHttpDto) (*resetpasswordcmd.Params, error) {
+func parseRequestResetPassword(dto ResetPasswordHttpDto) (*requestpasswordresetcmd.Params, error) {
 	email, err := valueobjects.NewEmail(dto.Email)
 	if err != nil {
 		return nil, err
 	}
-	return &resetpasswordcmd.Params{
+	return &requestpasswordresetcmd.Params{
 		Email: email,
 	}, nil
 }

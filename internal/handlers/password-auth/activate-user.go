@@ -4,31 +4,22 @@ import (
 	"log"
 	"net/http"
 
-	activatelogincmd "github.com/eliabe-portfolio/restaurant-app/internal/use-cases/auth/password-auth/activate-login"
+	activateusercmd "github.com/eliabe-portfolio/restaurant-app/internal/use-cases/auth/password-auth/activate-user"
 	valueobjects "github.com/eliabe-portfolio/restaurant-app/internal/value-objects"
 	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 )
 
 type ActivateLoginHttpDto struct {
-	ResetPasswordToken string `json:"reset_password_token" binding:"required"`
-	NewPassword        string `json:"new_password" binding:"required,min=8"`
+	ResetPasswordToken string `json:"reset_password_token"`
+	ResetPasswordHash  string `json:"reset_password_hash"`
+	NewPassword        string `json:"new_password"`
 }
 
-func (dto *ActivateLoginHttpDto) Validate() error {
-	var validate = validator.New()
-	return validate.Struct(dto)
-}
-
-func (hdl AuthHandler) ActivateLogin(ctx *gin.Context) {
+func (hdl AuthHandler) ActivateUser(ctx *gin.Context) {
 	var defaultError = returns.InternalServerError([]string{})
 	var dto ActivateLoginHttpDto
-
-	hash := ctx.Query("hash")
-
-	log.Println(hash)
 
 	if err := ctx.ShouldBindJSON(&dto); err != nil {
 		log.Printf("activate login command: %v", err)
@@ -36,23 +27,14 @@ func (hdl AuthHandler) ActivateLogin(ctx *gin.Context) {
 		return
 	}
 
-	if err := dto.Validate(); err != nil {
-		log.Printf("activate login command: %v", err)
-		ctx.JSON(http.StatusBadRequest, defaultError)
-		return
-	}
-
-	params, err := builActivateLoginParams(dto, hash)
+	params, err := parseActivateUser(dto)
 	if err != nil {
 		log.Printf("activate login command: %v", err)
 		ctx.JSON(http.StatusBadRequest, defaultError)
 		return
 	}
 
-	result, err := activatelogincmd.New(
-		hdl.repositories,
-		hdl.uow,
-	).Execute(*params)
+	result, err := activateusercmd.New(hdl.adapters).Execute(*params)
 
 	if err != nil {
 		log.Printf("activate login command: %v", err)
@@ -63,7 +45,7 @@ func (hdl AuthHandler) ActivateLogin(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
-func builActivateLoginParams(dto ActivateLoginHttpDto, hash string) (*activatelogincmd.Params, error) {
+func parseActivateUser(dto ActivateLoginHttpDto) (*activateusercmd.Params, error) {
 	newPassword, err := valueobjects.NewPassword(dto.NewPassword)
 	if err != nil {
 		return nil, err
@@ -74,9 +56,9 @@ func builActivateLoginParams(dto ActivateLoginHttpDto, hash string) (*activatelo
 		return nil, err
 	}
 
-	return &activatelogincmd.Params{
+	return &activateusercmd.Params{
 		ResetPasswordToken: uuid,
+		ResetPasswordHash:  dto.ResetPasswordToken,
 		NewPassword:        newPassword,
-		ResetPasswordHash:  hash,
 	}, nil
 }

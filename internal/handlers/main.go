@@ -13,7 +13,7 @@ type Handlers interface {
 
 func New(apt *adapters.Adapters) []Handlers {
 	return []Handlers{
-		authhdl.New(*apt),
-		userhdl.New(*apt),
+		authhdl.New(apt),
+		userhdl.New(apt),
 	}
 }
