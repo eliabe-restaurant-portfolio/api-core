@@ -3,15 +3,15 @@ package changepasswordcmd
 import (
 	"context"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
-	"github.com/eliabe-portfolio/restaurant-app/internal/aggregates"
-	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
-	"github.com/eliabe-portfolio/restaurant-app/internal/entities"
-	userrepo "github.com/eliabe-portfolio/restaurant-app/internal/repositories/users"
-	uow "github.com/eliabe-portfolio/restaurant-app/internal/unit-of-work"
-	valueobjects "github.com/eliabe-portfolio/restaurant-app/internal/value-objects"
-	hashing "github.com/eliabe-portfolio/restaurant-app/pkg/hash"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/adapters"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/aggregates"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/constants"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/entities"
+	userrepo "github.com/eliabe-restaurant-portfolio/api-core/internal/repositories/users"
+	uow "github.com/eliabe-restaurant-portfolio/api-core/internal/unit-of-work"
+	valueobjects "github.com/eliabe-restaurant-portfolio/api-core/internal/value-objects"
+	hashing "github.com/eliabe-restaurant-portfolio/api-core/pkg/hash"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/returns"
 	"github.com/google/uuid"
 )
 

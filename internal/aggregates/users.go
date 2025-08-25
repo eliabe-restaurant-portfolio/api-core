@@ -1,10 +1,10 @@
 package aggregates
 
 import (
-	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
-	"github.com/eliabe-portfolio/restaurant-app/internal/entities"
-	valueobjects "github.com/eliabe-portfolio/restaurant-app/internal/value-objects"
-	hashing "github.com/eliabe-portfolio/restaurant-app/pkg/hash"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/constants"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/entities"
+	valueobjects "github.com/eliabe-restaurant-portfolio/api-core/internal/value-objects"
+	hashing "github.com/eliabe-restaurant-portfolio/api-core/pkg/hash"
 )
 
 type User interface {

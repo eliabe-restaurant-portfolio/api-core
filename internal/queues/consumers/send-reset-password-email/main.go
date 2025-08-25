@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
-	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
-	sendresetpasswordemailcmd "github.com/eliabe-portfolio/restaurant-app/internal/use-cases/notification/email/send-reset-pwd-email"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/adapters"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/constants"
+	sendresetpasswordemailcmd "github.com/eliabe-restaurant-portfolio/api-core/internal/use-cases/notification/email/send-reset-pwd-email"
 	"github.com/google/uuid"
 	"github.com/rabbitmq/amqp091-go"
 )

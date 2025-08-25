@@ -3,11 +3,11 @@ package sendresetpasswordemailcmd
 import (
 	"fmt"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
-	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
-	resetpasswordrepo "github.com/eliabe-portfolio/restaurant-app/internal/repositories/reset-password"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/email"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/adapters"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/constants"
+	resetpasswordrepo "github.com/eliabe-restaurant-portfolio/api-core/internal/repositories/reset-password"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/email"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/returns"
 	"github.com/google/uuid"
 )
 

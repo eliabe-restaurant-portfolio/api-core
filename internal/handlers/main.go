@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
-	healthyhdl "github.com/eliabe-portfolio/restaurant-app/internal/handlers/healthy"
-	authhdl "github.com/eliabe-portfolio/restaurant-app/internal/handlers/password-auth"
-	userhdl "github.com/eliabe-portfolio/restaurant-app/internal/handlers/user"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/adapters"
+	healthyhdl "github.com/eliabe-restaurant-portfolio/api-core/internal/handlers/healthy"
+	authhdl "github.com/eliabe-restaurant-portfolio/api-core/internal/handlers/password-auth"
+	userhdl "github.com/eliabe-restaurant-portfolio/api-core/internal/handlers/user"
 	"github.com/gin-gonic/gin"
 )
 

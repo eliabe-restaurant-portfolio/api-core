@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	createusercmd "github.com/eliabe-portfolio/restaurant-app/internal/use-cases/core/users/create"
-	valueobjects "github.com/eliabe-portfolio/restaurant-app/internal/value-objects"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
+	createusercmd "github.com/eliabe-restaurant-portfolio/api-core/internal/use-cases/core/users/create"
+	valueobjects "github.com/eliabe-restaurant-portfolio/api-core/internal/value-objects"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/returns"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
@@ -79,7 +79,7 @@ func buildCreateUserParams(dto CreateUserHttpDto) (*createusercmd.Params, error)
 	return &createusercmd.Params{
 		Context:   context.Background(),
 		Email:     email,
-		TaxNumber: &taxNumber,
+		TaxNumber: taxNumber,
 		Username:  username,
 	}, nil
 }

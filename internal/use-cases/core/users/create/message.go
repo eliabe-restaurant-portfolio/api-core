@@ -1,14 +1,14 @@
 package createusercmd
 
 import (
-	"github.com/eliabe-portfolio/restaurant-app/internal/entities"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/entities"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/returns"
 )
 
 type MessageProvider interface {
 	Success(created *entities.User) returns.Api
 	Default() returns.Api
-	ExistsUserWithSameEmail() returns.Api
+	RepeatedUser() returns.Api
 }
 
 type messages struct{}
@@ -28,6 +28,6 @@ func (m messages) Default() returns.Api {
 	return returns.InternalServerError([]string{})
 }
 
-func (m messages) ExistsUserWithSameEmail() returns.Api {
-	return returns.BadRequest("exists user with same email")
+func (m messages) RepeatedUser() returns.Api {
+	return returns.BadRequest("repeated user")
 }

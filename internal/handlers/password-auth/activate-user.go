@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	activateusercmd "github.com/eliabe-portfolio/restaurant-app/internal/use-cases/auth/password-auth/activate-user"
-	valueobjects "github.com/eliabe-portfolio/restaurant-app/internal/value-objects"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
+	activateusercmd "github.com/eliabe-restaurant-portfolio/api-core/internal/use-cases/auth/password-auth/activate-user"
+	valueobjects "github.com/eliabe-restaurant-portfolio/api-core/internal/value-objects"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/returns"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )

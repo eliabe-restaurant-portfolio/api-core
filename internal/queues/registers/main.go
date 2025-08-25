@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/connections"
-	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/connections"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/constants"
 	"github.com/rabbitmq/amqp091-go"
 )
 

@@ -1,7 +1,7 @@
 package authhdl
 
 import (
-	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/adapters"
 	"github.com/gin-gonic/gin"
 )
 

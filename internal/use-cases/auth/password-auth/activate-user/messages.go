@@ -1,8 +1,8 @@
 package activateusercmd
 
 import (
-	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/constants"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/returns"
 )
 
 type MessageProvider interface {

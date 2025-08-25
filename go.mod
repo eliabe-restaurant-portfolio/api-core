@@ -1,4 +1,4 @@
-module github.com/eliabe-portfolio/restaurant-app
+module github.com/eliabe-restaurant-portfolio/api-core
 
 go 1.24.6
 

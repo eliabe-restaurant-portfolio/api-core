@@ -1,8 +1,8 @@
 package producers
 
 import (
-	"github.com/eliabe-portfolio/restaurant-app/internal/connections"
-	sendresetpasswordemailproducer "github.com/eliabe-portfolio/restaurant-app/internal/queues/producers/send-reset-password-email"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/connections"
+	sendresetpasswordemailproducer "github.com/eliabe-restaurant-portfolio/api-core/internal/queues/producers/send-reset-password-email"
 )
 
 type Provider interface {

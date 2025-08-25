@@ -1,6 +1,6 @@
 package sendresetpasswordemailcmd
 
-import "github.com/eliabe-portfolio/restaurant-app/pkg/returns"
+import "github.com/eliabe-restaurant-portfolio/api-core/pkg/returns"
 
 type MessageProvider struct {
 	Success func() returns.Api

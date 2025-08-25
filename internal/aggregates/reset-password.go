@@ -3,8 +3,8 @@ package aggregates
 import (
 	"time"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/entities"
-	hashing "github.com/eliabe-portfolio/restaurant-app/pkg/hash"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/entities"
+	hashing "github.com/eliabe-restaurant-portfolio/api-core/pkg/hash"
 )
 
 type ResetPassword interface {
@@ -30,5 +30,5 @@ func (aggr resetPasswordAggr) IsExpired() bool {
 }
 
 func (aggr resetPasswordAggr) TokenIsValid(input string) bool {
-	return hashing.Compare(input, aggr.val.Hash)
+	return hashing.Compare(aggr.val.Hash, input)
 }

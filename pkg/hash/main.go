@@ -11,10 +11,8 @@ import (
 )
 
 const (
-	hashCharset           = "abcdefghijklmnopqrstuvwxyzA"
-	defaultRandomLength   = 16
-	passwordCharset       = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+"
-	defaultPasswordLength = 16
+	hashCharset         = "abcdefghijklmnopqrstuvwxyzA"
+	defaultRandomLength = 16
 )
 const (
 	lowercaseChars = "abcdefghijklmnopqrstuvwxyz"

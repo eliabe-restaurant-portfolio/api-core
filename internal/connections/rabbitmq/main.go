@@ -5,8 +5,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/connections/configs"
-	"github.com/eliabe-portfolio/restaurant-app/internal/envs"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/connections/configs"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/envs"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 

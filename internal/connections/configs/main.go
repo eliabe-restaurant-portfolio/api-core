@@ -3,7 +3,7 @@ package configs
 import (
 	"fmt"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/envs"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/envs"
 )
 
 type Config struct {

@@ -3,7 +3,7 @@ package uow
 import (
 	"context"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/connections"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/connections"
 	"gorm.io/gorm"
 )
 

@@ -6,8 +6,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/connections/configs"
-	"github.com/eliabe-portfolio/restaurant-app/internal/envs"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/connections/configs"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/envs"
 	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

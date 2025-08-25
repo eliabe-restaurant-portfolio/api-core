@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
-	"github.com/eliabe-portfolio/restaurant-app/internal/entities"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/errs"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/constants"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/entities"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/errs"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )

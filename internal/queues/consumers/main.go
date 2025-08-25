@@ -3,10 +3,10 @@ package consumers
 import (
 	"log"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
-	"github.com/eliabe-portfolio/restaurant-app/internal/connections"
-	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
-	sendresetpasswordemailconsumer "github.com/eliabe-portfolio/restaurant-app/internal/queues/consumers/send-reset-password-email"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/adapters"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/connections"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/constants"
+	sendresetpasswordemailconsumer "github.com/eliabe-restaurant-portfolio/api-core/internal/queues/consumers/send-reset-password-email"
 	"github.com/rabbitmq/amqp091-go"
 )
 

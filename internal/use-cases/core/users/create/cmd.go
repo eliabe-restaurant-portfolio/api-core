@@ -4,15 +4,15 @@ import (
 	"context"
 	"time"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
-	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
-	sendresetpasswordemailproducer "github.com/eliabe-portfolio/restaurant-app/internal/queues/producers/send-reset-password-email"
-	resetpasswordrepo "github.com/eliabe-portfolio/restaurant-app/internal/repositories/reset-password"
-	userrepo "github.com/eliabe-portfolio/restaurant-app/internal/repositories/users"
-	uow "github.com/eliabe-portfolio/restaurant-app/internal/unit-of-work"
-	valueobjects "github.com/eliabe-portfolio/restaurant-app/internal/value-objects"
-	hashing "github.com/eliabe-portfolio/restaurant-app/pkg/hash"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/adapters"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/constants"
+	sendresetpasswordemailproducer "github.com/eliabe-restaurant-portfolio/api-core/internal/queues/producers/send-reset-password-email"
+	resetpasswordrepo "github.com/eliabe-restaurant-portfolio/api-core/internal/repositories/reset-password"
+	userrepo "github.com/eliabe-restaurant-portfolio/api-core/internal/repositories/users"
+	uow "github.com/eliabe-restaurant-portfolio/api-core/internal/unit-of-work"
+	valueobjects "github.com/eliabe-restaurant-portfolio/api-core/internal/value-objects"
+	hashing "github.com/eliabe-restaurant-portfolio/api-core/pkg/hash"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/returns"
 )
 
 type Command struct {
@@ -37,7 +37,7 @@ type Params struct {
 	Context   context.Context
 	Username  valueobjects.Username
 	Email     valueobjects.Email
-	TaxNumber *valueobjects.TaxNumber
+	TaxNumber valueobjects.TaxNumber
 }
 
 type Return struct {
@@ -51,32 +51,22 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 	cmd.unitOfWork.Init(ctx)
 
 	existingEmail, err := cmd.userRepository.Find(userrepo.FindUserDto{
-		Email: &params.Email,
+		Email:     &params.Email,
+		TaxNumber: &params.TaxNumber,
 	})
 	if err != nil {
 		return cmd.messages.Default(), err
 	}
 
 	if existingEmail != nil {
-		return cmd.messages.ExistsUserWithSameEmail(), nil
-	}
-
-	existingUsername, err := cmd.userRepository.Find(userrepo.FindUserDto{
-		Email: &params.Email,
-	})
-	if err != nil {
-		return cmd.messages.Default(), err
-	}
-
-	if existingUsername != nil {
-		return cmd.messages.ExistsUserWithSameEmail(), nil
+		return cmd.messages.RepeatedUser(), nil
 	}
 
 	createdUser, err := cmd.userRepository.Create(userrepo.CreateUserDto{
 		Ctx:       params.Context,
 		Username:  params.Username,
 		Email:     params.Email,
-		TaxNumber: params.TaxNumber,
+		TaxNumber: &params.TaxNumber,
 		Status:    constants.UserInactive,
 	})
 	if err != nil {

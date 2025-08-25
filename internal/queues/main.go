@@ -1,10 +1,10 @@
 package queues
 
 import (
-	"github.com/eliabe-portfolio/restaurant-app/internal/connections"
-	"github.com/eliabe-portfolio/restaurant-app/internal/queues/producers"
-	"github.com/eliabe-portfolio/restaurant-app/internal/queues/registers"
-	"github.com/eliabe-portfolio/restaurant-app/internal/repositories"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/connections"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/queues/producers"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/queues/registers"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/repositories"
 )
 
 type Provider interface {

@@ -1,13 +1,13 @@
 package adapters
 
 import (
-	"github.com/eliabe-portfolio/restaurant-app/internal/connections"
-	"github.com/eliabe-portfolio/restaurant-app/internal/middlewares"
-	"github.com/eliabe-portfolio/restaurant-app/internal/queues"
-	"github.com/eliabe-portfolio/restaurant-app/internal/queues/producers"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/connections"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/middlewares"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/queues"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/queues/producers"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/repositories"
-	uow "github.com/eliabe-portfolio/restaurant-app/internal/unit-of-work"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/repositories"
+	uow "github.com/eliabe-restaurant-portfolio/api-core/internal/unit-of-work"
 )
 
 type Adapters interface {

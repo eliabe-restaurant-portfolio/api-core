@@ -1,7 +1,7 @@
 package resetpasswordrepo
 
 import (
-	"github.com/eliabe-portfolio/restaurant-app/internal/entities"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/entities"
 	"gorm.io/gorm"
 )
 

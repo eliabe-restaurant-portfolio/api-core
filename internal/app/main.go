@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
-	httpserver "github.com/eliabe-portfolio/restaurant-app/internal/app/http"
-	"github.com/eliabe-portfolio/restaurant-app/internal/connections/configs"
-	"github.com/eliabe-portfolio/restaurant-app/internal/handlers"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/adapters"
+	httpserver "github.com/eliabe-restaurant-portfolio/api-core/internal/app/http"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/connections/configs"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/handlers"
 	"github.com/gin-gonic/gin"
 )
 

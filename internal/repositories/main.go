@@ -1,9 +1,9 @@
 package repositories
 
 import (
-	"github.com/eliabe-portfolio/restaurant-app/internal/connections"
-	resetpasswordrepo "github.com/eliabe-portfolio/restaurant-app/internal/repositories/reset-password"
-	userrepo "github.com/eliabe-portfolio/restaurant-app/internal/repositories/users"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/connections"
+	resetpasswordrepo "github.com/eliabe-restaurant-portfolio/api-core/internal/repositories/reset-password"
+	userrepo "github.com/eliabe-restaurant-portfolio/api-core/internal/repositories/users"
 )
 
 type Provider interface {

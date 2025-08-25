@@ -1,9 +1,9 @@
 package connections
 
 import (
-	"github.com/eliabe-portfolio/restaurant-app/internal/connections/configs"
-	"github.com/eliabe-portfolio/restaurant-app/internal/connections/postgres"
-	"github.com/eliabe-portfolio/restaurant-app/internal/connections/rabbitmq"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/connections/configs"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/connections/postgres"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/connections/rabbitmq"
 	"gorm.io/gorm"
 )
 

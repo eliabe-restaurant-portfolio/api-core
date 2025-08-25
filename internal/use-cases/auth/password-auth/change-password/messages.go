@@ -3,8 +3,8 @@ package changepasswordcmd
 import (
 	"fmt"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/aggregates"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/aggregates"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/returns"
 )
 
 type MessageProvider interface {

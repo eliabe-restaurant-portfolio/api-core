@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/eliabe-portfolio/restaurant-app/pkg/jwt"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/jwt"
 	"github.com/gin-gonic/gin"
 )
 

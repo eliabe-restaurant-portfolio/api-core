@@ -3,10 +3,10 @@ package traditionallogincmd
 import (
 	"fmt"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/aggregates"
-	"github.com/eliabe-portfolio/restaurant-app/internal/entities"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/jwt"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/aggregates"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/entities"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/jwt"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/returns"
 )
 
 type MessageProvider interface {

@@ -4,10 +4,10 @@ import (
 	"log"
 	"net/http"
 
-	changepasswordcmd "github.com/eliabe-portfolio/restaurant-app/internal/use-cases/auth/password-auth/change-password"
-	valueobjects "github.com/eliabe-portfolio/restaurant-app/internal/value-objects"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/request"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
+	changepasswordcmd "github.com/eliabe-restaurant-portfolio/api-core/internal/use-cases/auth/password-auth/change-password"
+	valueobjects "github.com/eliabe-restaurant-portfolio/api-core/internal/value-objects"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/request"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/returns"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )

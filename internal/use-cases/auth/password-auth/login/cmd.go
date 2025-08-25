@@ -3,16 +3,16 @@ package traditionallogincmd
 import (
 	"context"
 
-	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
-	"github.com/eliabe-portfolio/restaurant-app/internal/aggregates"
-	"github.com/eliabe-portfolio/restaurant-app/internal/constants"
-	"github.com/eliabe-portfolio/restaurant-app/internal/entities"
-	"github.com/eliabe-portfolio/restaurant-app/internal/envs"
-	userrepo "github.com/eliabe-portfolio/restaurant-app/internal/repositories/users"
-	uow "github.com/eliabe-portfolio/restaurant-app/internal/unit-of-work"
-	objects "github.com/eliabe-portfolio/restaurant-app/internal/value-objects"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/jwt"
-	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/adapters"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/aggregates"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/constants"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/entities"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/envs"
+	userrepo "github.com/eliabe-restaurant-portfolio/api-core/internal/repositories/users"
+	uow "github.com/eliabe-restaurant-portfolio/api-core/internal/unit-of-work"
+	objects "github.com/eliabe-restaurant-portfolio/api-core/internal/value-objects"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/jwt"
+	"github.com/eliabe-restaurant-portfolio/api-core/pkg/returns"
 )
 
 type Command struct {
