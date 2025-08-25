@@ -34,10 +34,12 @@ down:
 
 logs:
 	@echo "📜 Exibindo logs da API..."
-	docker logs -f docker_restaurant_app
+	docker logs -f docker_restaurant_api
 
-migrate-up:
-	docker compose run --rm migrate MIGRATE_ACTION=up
+migrate:
+	@echo "Running migrations..."
+	docker exec docker_restaurant_api migrate -path=internal/connections/postgres/migrations -database ${DATABASE_URL} -verbose up
 
 migrate-down:
-	docker compose run --rm migrate MIGRATE_ACTION=down
+	@echo "Reverting migrations..."
+	docker exec docker_restaurant_api migrate -path=internal/connections/postgres/migrations -database ${DATABASE_URL} -verbose down

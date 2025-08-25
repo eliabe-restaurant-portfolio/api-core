@@ -3,7 +3,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TYPE user_status AS ENUM (
     'active',
     'inactive',
-    'blocked',
+    'blocked'
 );
 
 CREATE TABLE users (

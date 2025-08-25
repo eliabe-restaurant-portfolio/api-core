@@ -1,5 +1,5 @@
 services:
-  app:
+  api:
     build:
       context: ../..
       dockerfile: setup/dev/app/Dockerfile
@@ -7,7 +7,7 @@ services:
       - ../../.env
     ports:
       - "8080:8080" 
-    container_name: "docker_restaurant_app"
+    container_name: "docker_restaurant_api"
     environment:
       - GO111MODULE=on
       - CGO_ENABLED=0
@@ -55,9 +55,9 @@ services:
     networks:
       - backend
     depends_on:
-      - app
+      - api
     restart: unless-stopped
-
+  
 volumes:
   logs_data:
   postgres_data:
