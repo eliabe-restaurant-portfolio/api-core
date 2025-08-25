@@ -94,7 +94,7 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 
 	err = cmd.sendResetPasswordEmailProducer.Send(sendresetpasswordemailproducer.SendPasswordResetEmailMessage{
 		ResetPasswordToken: created.Token.String(),
-		Token:              random,
+		RandomHash:         random,
 	})
 	if err != nil {
 		cmd.unitOfWork.Rollback(ctx)

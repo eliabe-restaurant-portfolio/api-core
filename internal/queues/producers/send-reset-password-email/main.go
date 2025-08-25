@@ -15,7 +15,7 @@ type Producer interface {
 
 type SendPasswordResetEmailMessage struct {
 	ResetPasswordToken string
-	Token              string
+	RandomHash         string
 }
 
 type producer struct {

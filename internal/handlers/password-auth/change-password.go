@@ -13,7 +13,6 @@ import (
 )
 
 type ChangePasswordHttpDto struct {
-	Email       string `json:"email"`
 	OldPassword string `json:"old_password"`
 	NewPassword string `json:"new_password"`
 }
@@ -53,11 +52,6 @@ func (hdl AuthHandler) ChangePassword(ctx *gin.Context) {
 }
 
 func parseChangePassword(actorToken uuid.UUID, dto ChangePasswordHttpDto) (*changepasswordcmd.Params, error) {
-	email, err := valueobjects.NewEmail(dto.Email)
-	if err != nil {
-		return nil, err
-	}
-
 	oldPassword, err := valueobjects.NewPassword(dto.OldPassword)
 	if err != nil {
 		return nil, err
@@ -70,7 +64,6 @@ func parseChangePassword(actorToken uuid.UUID, dto ChangePasswordHttpDto) (*chan
 
 	return &changepasswordcmd.Params{
 		ActorToken:  actorToken,
-		Email:       email,
 		OldPassword: oldPassword,
 		NewPassword: newPassword,
 	}, nil

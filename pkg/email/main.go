@@ -4,10 +4,7 @@ import (
 	"fmt"
 	"net/smtp"
 	"os"
-	"strings"
 )
-
-var templatePath = "internal/resources/views/email/reset-password.html"
 
 type EmailHelper struct {
 	SMTPHost     string
@@ -26,23 +23,17 @@ func New() EmailHelper {
 }
 
 type PasswordResetEmailInput struct {
-	To       string
-	Subject  string
-	UserName string
-	Url      string
+	To                 string
+	Subject            string
+	UserName           string
+	Hash               string
+	ResetPasswordToken string
 }
 
 func (e EmailHelper) SendPasswordResetEmail(input PasswordResetEmailInput) error {
-	content, err := os.ReadFile(templatePath)
-	if err != nil {
-		return err
-	}
+	emailContent := fmt.Sprintf("Hash: %v \nToken: %v", input.Hash, input.ResetPasswordToken)
 
-	htmlContent := string(content)
-	htmlContent = strings.ReplaceAll(htmlContent, "{{ .Username }}", input.UserName)
-	htmlContent = strings.ReplaceAll(htmlContent, "{{ .Url }}", input.Url)
-
-	err = e.sendHtmlEmail(input.To, input.Subject, htmlContent)
+	err := e.sendHtmlEmail(input.To, input.Subject, string(emailContent))
 	if err != nil {
 		return err
 	}

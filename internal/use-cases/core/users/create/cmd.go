@@ -72,16 +72,10 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 		return cmd.messages.ExistsUserWithSameEmail(), nil
 	}
 
-	encrypted, _, err := hashing.GeneratePassword()
-	if err != nil {
-		return cmd.messages.Default(), err
-	}
-
 	createdUser, err := cmd.userRepository.Create(userrepo.CreateUserDto{
 		Ctx:       params.Context,
 		Username:  params.Username,
 		Email:     params.Email,
-		Password:  encrypted,
 		TaxNumber: params.TaxNumber,
 		Status:    constants.UserInactive,
 	})
@@ -94,7 +88,7 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 	now := time.Now()
 	future := now.Add(30 * time.Minute)
 
-	encrypted, random, err := hashing.GenerateRandom()
+	encrypted, randomHash, err := hashing.GenerateRandom()
 	if err != nil {
 		cmd.unitOfWork.Rollback(params.Context)
 
@@ -115,7 +109,7 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 
 	if err = cmd.sendInviteUserEmailProducer.Send(sendresetpasswordemailproducer.SendPasswordResetEmailMessage{
 		ResetPasswordToken: createdReset.Token.String(),
-		Token:              random,
+		RandomHash:         randomHash,
 	}); err != nil {
 		cmd.unitOfWork.Rollback(ctx)
 

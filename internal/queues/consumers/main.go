@@ -51,10 +51,5 @@ func (c *Consumer) handler(deliveries <-chan amqp091.Delivery) {
 			consumer.Process(d)
 			return
 		}
-		if d.RoutingKey == constants.Queues.InviteUserEmail {
-			consumer := sendresetpasswordemailconsumer.New(c.adapters)
-			consumer.Process(d)
-			return
-		}
 	}
 }

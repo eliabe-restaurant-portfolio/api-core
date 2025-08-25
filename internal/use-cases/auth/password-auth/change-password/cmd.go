@@ -23,7 +23,6 @@ type Command struct {
 
 type Params struct {
 	ActorToken  uuid.UUID
-	Email       valueobjects.Email
 	OldPassword valueobjects.Password
 	NewPassword valueobjects.Password
 }

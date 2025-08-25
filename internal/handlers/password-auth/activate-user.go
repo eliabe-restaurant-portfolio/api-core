@@ -46,19 +46,19 @@ func (hdl AuthHandler) ActivateUser(ctx *gin.Context) {
 }
 
 func parseActivateUser(dto ActivateLoginHttpDto) (*activateusercmd.Params, error) {
-	newPassword, err := valueobjects.NewPassword(dto.NewPassword)
+	uuid, err := uuid.Parse(dto.ResetPasswordToken)
 	if err != nil {
 		return nil, err
 	}
 
-	uuid, err := uuid.Parse(dto.ResetPasswordToken)
+	pwd, err := valueobjects.NewPassword(dto.NewPassword)
 	if err != nil {
 		return nil, err
 	}
 
 	return &activateusercmd.Params{
 		ResetPasswordToken: uuid,
-		ResetPasswordHash:  dto.ResetPasswordToken,
-		NewPassword:        newPassword,
+		ResetPasswordHash:  dto.ResetPasswordHash,
+		NewPassword:        pwd,
 	}, nil
 }

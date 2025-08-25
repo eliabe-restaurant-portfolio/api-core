@@ -13,7 +13,8 @@ import (
 
 type SendPasswordResetEmailMessage struct {
 	ResetPasswordToken string
-	Token              string
+	RandomHash         string
+	RandomHashs        string
 }
 
 type consumer struct {
@@ -34,7 +35,7 @@ func (c consumer) Process(d amqp091.Delivery) {
 
 	params := sendresetpasswordemailcmd.Params{
 		ResetPasswordToken: uuid.MustParse(body.ResetPasswordToken),
-		Token:              body.Token,
+		RandomHash:         body.RandomHash,
 	}
 
 	log.Printf("Processing password reset email message: %+v", params)

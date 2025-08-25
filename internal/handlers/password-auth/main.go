@@ -20,7 +20,6 @@ func (hdl *AuthHandler) Register(router *gin.Engine) {
 
 	group.POST("login", hdl.Login)
 	group.POST("activate", hdl.ActivateUser)
-	group.POST("confirm", hdl.ConfirmUser)
 	group.POST("reset", hdl.RequestResetPassword)
 
 	group.Use((*hdl.adapters).Middlewares().BearerAuth())

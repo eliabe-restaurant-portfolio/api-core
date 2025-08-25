@@ -26,9 +26,9 @@ func (aggr resetPasswordAggr) Exists() bool {
 }
 
 func (aggr resetPasswordAggr) IsExpired() bool {
-	return time.Now().Before(aggr.val.CreatedAt)
+	return time.Now().After(aggr.val.ValidAt)
 }
 
 func (aggr resetPasswordAggr) TokenIsValid(input string) bool {
-	return hashing.Compare(aggr.val.Hash, input)
+	return hashing.Compare(input, aggr.val.Hash)
 }

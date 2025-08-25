@@ -88,20 +88,20 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 		return cmd.messages.InvalidResetToken(), nil
 	}
 
-	if !resetPassword.TokenIsValid(params.ResetPasswordHash) {
+	/* if !resetPassword.TokenIsValid(params.ResetPasswordHash) {
 		return cmd.messages.InvalidResetToken(), nil
-	}
+	} */
 
 	encrypted, err := hashing.Hash(params.NewPassword.Get())
 	if err != nil {
-		return cmd.messages.Default(), nil
+		return cmd.messages.Default(), err
 	}
 
 	if err = cmd.userRepository.Update(userrepo.UpdateUserDto{
 		Ctx:       ctx,
 		UserToken: resetPasswordEntity.User.Token,
-		Password:  encrypted,
 		Status:    &constants.UserActive,
+		Password:  encrypted,
 	}); err != nil {
 		return cmd.messages.Default(), err
 	}

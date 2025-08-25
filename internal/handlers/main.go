@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/eliabe-portfolio/restaurant-app/internal/adapters"
+	healthyhdl "github.com/eliabe-portfolio/restaurant-app/internal/handlers/healthy"
 	authhdl "github.com/eliabe-portfolio/restaurant-app/internal/handlers/password-auth"
 	userhdl "github.com/eliabe-portfolio/restaurant-app/internal/handlers/user"
 	"github.com/gin-gonic/gin"
@@ -15,5 +16,6 @@ func New(apt *adapters.Adapters) []Handlers {
 	return []Handlers{
 		authhdl.New(apt),
 		userhdl.New(apt),
+		healthyhdl.New(apt),
 	}
 }
