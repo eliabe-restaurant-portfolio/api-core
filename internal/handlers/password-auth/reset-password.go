@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	requestpasswordresetcmd "github.com/eliabe-portfolio/restaurant-app/internal/use-cases/auth/password-auth/request-password-reset"
+	resetpasswordcmd "github.com/eliabe-portfolio/restaurant-app/internal/use-cases/auth/password-auth/reset-password"
 	valueobjects "github.com/eliabe-portfolio/restaurant-app/internal/value-objects"
 	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"
 	"github.com/gin-gonic/gin"
@@ -31,7 +31,7 @@ func (hdl AuthHandler) RequestResetPassword(ctx *gin.Context) {
 		return
 	}
 
-	result, err := requestpasswordresetcmd.New(hdl.adapters).Execute(*params)
+	result, err := resetpasswordcmd.New(hdl.adapters).Execute(*params)
 
 	if err != nil {
 		log.Printf("reset password command: %v", err)
@@ -44,12 +44,12 @@ func (hdl AuthHandler) RequestResetPassword(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, result)
 }
 
-func parseRequestResetPassword(dto ResetPasswordHttpDto) (*requestpasswordresetcmd.Params, error) {
+func parseRequestResetPassword(dto ResetPasswordHttpDto) (*resetpasswordcmd.Params, error) {
 	email, err := valueobjects.NewEmail(dto.Email)
 	if err != nil {
 		return nil, err
 	}
-	return &requestpasswordresetcmd.Params{
+	return &resetpasswordcmd.Params{
 		Email: email,
 	}, nil
 }

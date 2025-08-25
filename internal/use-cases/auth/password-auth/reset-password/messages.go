@@ -1,4 +1,4 @@
-package requestpasswordresetcmd
+package resetpasswordcmd
 
 import (
 	"github.com/eliabe-portfolio/restaurant-app/pkg/returns"

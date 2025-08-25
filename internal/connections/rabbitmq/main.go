@@ -31,8 +31,6 @@ func (rc *Connection) Close() error {
 }
 
 func Connect(conf *configs.Config) (*Connection, error) {
-	fmt.Println(conf.RabbitMQ)
-
 	var conn *amqp.Connection
 	var err error
 	maxRetries := 10

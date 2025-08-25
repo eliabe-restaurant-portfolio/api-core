@@ -2,20 +2,21 @@ services:
   app:
     build:
       context: ../..
-      dockerfile: setup/dev/app/Dockerfile.app
+      dockerfile: setup/dev/app/Dockerfile
     env_file:
       - ../../.env
+    ports:
+      - "8080:8080" 
     container_name: "docker_restaurant_app"
     environment:
       - GO111MODULE=on
       - CGO_ENABLED=0
-    ports:
-      - "8080:8080"
     networks:
       - backend
     depends_on:
       - postgres
       - rabbitmq
+    restart: unless-stopped
 
   postgres:
     image: postgres:16
@@ -32,6 +33,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - backend
+    restart: unless-stopped
     
   rabbitmq:
     image: rabbitmq:3-management
@@ -41,6 +43,20 @@ services:
       - "15672:15672"
     networks:
       - backend
+    restart: unless-stopped
+  
+  webserver:
+    image: nginx:alpine
+    container_name: "docker_restaurant_webserver"
+    ports:
+      - "80:80" 
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    networks:
+      - backend
+    depends_on:
+      - app
+    restart: unless-stopped
 
 volumes:
   logs_data:

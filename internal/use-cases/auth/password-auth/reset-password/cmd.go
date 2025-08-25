@@ -1,4 +1,4 @@
-package requestpasswordresetcmd
+package resetpasswordcmd
 
 import (
 	"context"
