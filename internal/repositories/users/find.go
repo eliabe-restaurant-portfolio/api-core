@@ -50,7 +50,7 @@ func (r repository) Find(dto FindUserDto) (*entities.User, error) {
 	}
 
 	if dto.TaxNumber != nil {
-		if err := query.Where("tax_number = ?", dto.Username.Get()).First(&user).Error; err != nil {
+		if err := query.Where("tax_number = ?", dto.TaxNumber.Get()).First(&user).Error; err != nil {
 			if err == gorm.ErrRecordNotFound {
 				return nil, nil
 			}
