@@ -62,10 +62,6 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 		return cmd.messages.ResetPasswordNotExists(), nil
 	}
 
-	if !actor.Exists() {
-		return cmd.messages.UserNotExists(), nil
-	}
-
 	if actor.IsActive() {
 		return cmd.messages.UserIsAlreadyActive(), nil
 	}

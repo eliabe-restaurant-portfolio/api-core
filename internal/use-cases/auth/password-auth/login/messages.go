@@ -45,11 +45,11 @@ func (m messages) UserNotExists() returns.Api {
 }
 
 func (m messages) UserIsInactive() returns.Api {
-	return returns.Forbidden("user is inactive.")
+	return returns.Unauthorized("user is inactive.")
 }
 
 func (m messages) UserIsBlocked() returns.Api {
-	return returns.Forbidden("user is block.")
+	return returns.Unauthorized("user is block.")
 }
 
 func (m messages) BlockUser() returns.Api {

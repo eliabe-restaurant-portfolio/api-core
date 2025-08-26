@@ -53,18 +53,6 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 
 	var actor = aggregates.NewUser(actorEntity)
 
-	if !actor.Exists() {
-		return cmd.messages.UserNotExists(), nil
-	}
-
-	if actor.IsInactive() {
-		return cmd.messages.UserIsInactive(), nil
-	}
-
-	if actor.IsBlocked() {
-		return cmd.messages.UserIsBlocked(), nil
-	}
-
 	isValid := actor.IsValidPassword(params.OldPassword)
 
 	if !isValid && actor.HasMaxFailedLoginAttempts() {

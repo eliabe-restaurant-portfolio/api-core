@@ -50,15 +50,25 @@ func (cmd Command) Execute(params Params) (returns.Api, error) {
 	var ctx = context.Background()
 	cmd.unitOfWork.Init(ctx)
 
-	existingEmail, err := cmd.userRepository.Find(userrepo.FindUserDto{
-		Email:     &params.Email,
+	existingEmailUser, err := cmd.userRepository.Find(userrepo.FindUserDto{
+		Email: &params.Email,
+	})
+	if err != nil {
+		return cmd.messages.Default(), err
+	}
+
+	if existingEmailUser != nil {
+		return cmd.messages.RepeatedUser(), nil
+	}
+
+	existingTaxNumberUser, err := cmd.userRepository.Find(userrepo.FindUserDto{
 		TaxNumber: &params.TaxNumber,
 	})
 	if err != nil {
 		return cmd.messages.Default(), err
 	}
 
-	if existingEmail != nil {
+	if existingTaxNumberUser != nil {
 		return cmd.messages.RepeatedUser(), nil
 	}
 

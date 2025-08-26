@@ -9,7 +9,6 @@ type MessageProvider interface {
 	Success() returns.Api
 	Default() returns.Api
 	ResetPasswordNotExists() returns.Api
-	UserNotExists() returns.Api
 	UserIsAlreadyActive() returns.Api
 	UserIsBlocked() returns.Api
 	InvalidResetToken() returns.Api
@@ -33,16 +32,12 @@ func (m messages) ResetPasswordNotExists() returns.Api {
 	return returns.BadRequest("reset password not exists")
 }
 
-func (m messages) UserNotExists() returns.Api {
-	return returns.NotFound("user not found.")
-}
-
 func (m messages) UserIsAlreadyActive() returns.Api {
 	return returns.BadRequest("user is already active.")
 }
 
 func (m messages) UserIsBlocked() returns.Api {
-	return returns.Forbidden("user is block.")
+	return returns.Forbidden("user is blocked.")
 }
 
 func (m messages) InvalidResetToken() returns.Api {
