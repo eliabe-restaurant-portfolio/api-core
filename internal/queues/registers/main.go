@@ -1,0 +1,40 @@
+package registers
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/connections"
+	"github.com/eliabe-restaurant-portfolio/api-core/internal/constants"
+	"github.com/rabbitmq/amqp091-go"
+)
+
+const (
+	DefaultTimeout = 5 * time.Second
+)
+
+type QueueHandler struct {
+	channel *amqp091.Channel
+}
+
+func New(connections *connections.Provider) *QueueHandler {
+	return &QueueHandler{channel: connections.RabbitMQ.Get()}
+}
+
+func (h *QueueHandler) declareQueue(queueName string) {
+	_, err := h.channel.QueueDeclare(
+		queueName,
+		true,  // durable
+		false, // autoDelete
+		false, // exclusive
+		false, // noWait
+		nil,   // args
+	)
+	if err != nil {
+		panic(fmt.Errorf("failed to declare queue %q: %w", queueName, err))
+	}
+}
+
+func (h *QueueHandler) DeclareAllQueues() {
+	h.declareQueue(string(constants.Queues.ResetPasswordEmail))
+}

@@ -1,0 +1,23 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  cmd = "go run main.go"
+  bin = "tmp/main"
+  full_bin = "tmp/main"
+
+[watch]
+  dirs = ["."]
+  exclude_dirs = ["tmp", "vendor", "migrations"]
+
+extensions = [".go", ".tmpl", ".html", ".env"]
+exclude_files = ["go.sum", "go.mod"]
+
+[log]
+  level = "debug"
+
+[debug]
+  enabled = true
+  addr = "0.0.0.0:40000"
+  mode = "remote"
+  api_version = 2
