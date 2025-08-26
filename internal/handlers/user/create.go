@@ -13,8 +13,8 @@ import (
 )
 
 type CreateUserHttpDto struct {
-	Email     string  `json:"email" validate:"required,email"`
-	Username  string  `json:"username" validate:"required,min=6"`
+	Email     string  `json:"email"`
+	Username  string  `json:"username"`
 	TaxNumber *string `json:"tax_number"`
 }
 
