@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	changepasswordcmd "github.com/eliabe-restaurant-portfolio/api-core/internal/use-cases/auth/password-auth/change-password"
+	changepasswordcmd "github.com/eliabe-restaurant-portfolio/api-core/internal/use-cases/auth/password/change-password"
 	valueobjects "github.com/eliabe-restaurant-portfolio/api-core/internal/value-objects"
 	"github.com/eliabe-restaurant-portfolio/api-core/pkg/request"
 	"github.com/eliabe-restaurant-portfolio/api-core/pkg/returns"

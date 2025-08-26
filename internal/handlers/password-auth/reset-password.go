@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	resetpasswordcmd "github.com/eliabe-restaurant-portfolio/api-core/internal/use-cases/auth/password-auth/reset-password"
+	resetpasswordcmd "github.com/eliabe-restaurant-portfolio/api-core/internal/use-cases/auth/password/reset-password"
 	valueobjects "github.com/eliabe-restaurant-portfolio/api-core/internal/value-objects"
 	"github.com/eliabe-restaurant-portfolio/api-core/pkg/returns"
 	"github.com/gin-gonic/gin"

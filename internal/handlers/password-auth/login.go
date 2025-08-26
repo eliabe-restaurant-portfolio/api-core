@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	traditionallogincmd "github.com/eliabe-restaurant-portfolio/api-core/internal/use-cases/auth/password-auth/login"
+	traditionallogincmd "github.com/eliabe-restaurant-portfolio/api-core/internal/use-cases/auth/password/login"
 	valueobjects "github.com/eliabe-restaurant-portfolio/api-core/internal/value-objects"
 	"github.com/eliabe-restaurant-portfolio/api-core/pkg/returns"
 	"github.com/gin-gonic/gin"

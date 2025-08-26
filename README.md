@@ -14,14 +14,16 @@ Está disponibilizada em
 make generate-key
 ```
 
-3. Faça o build:
+3. Adicione o .env seguindo example.env como referência.
+
+4. Faça o build:
 
 ``` shell
 make build
 ```
 
-4. Rode os migratios, caso necessaŕio:
+5. Rode os migrations, caso necessaŕio:
 
 ``` shell
-
+make migrate-up
 ```

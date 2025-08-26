@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	activateusercmd "github.com/eliabe-restaurant-portfolio/api-core/internal/use-cases/auth/password-auth/activate-user"
+	activateusercmd "github.com/eliabe-restaurant-portfolio/api-core/internal/use-cases/auth/password/activate-user"
 	valueobjects "github.com/eliabe-restaurant-portfolio/api-core/internal/value-objects"
 	"github.com/eliabe-restaurant-portfolio/api-core/pkg/returns"
 	"github.com/gin-gonic/gin"
